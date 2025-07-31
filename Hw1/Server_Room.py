@@ -14,7 +14,7 @@ async def join_chat(sid, message):
 
 @sio.event
 async def exit_chat(sid, message):
-        print()
+        print(message.get('name', sid) + ' exited from {}'.format(message['room']))
         await sio.leave_room(sid, message['room'])
 
 @sio.event
