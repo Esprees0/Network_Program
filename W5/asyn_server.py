@@ -25,7 +25,7 @@ async def connect(sid, environ):
     await sio.emit('my_respones', {'data': 'Connected', 'count': 0}, room=sid)
 
 @sio.event
-def disconnect(sid):
+async def disconnect(sid):
     print('Client disconnected')
 
 if __name__ == '__main__':
