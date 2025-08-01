@@ -6,10 +6,9 @@ from aioconsole import ainput
 if __name__ == '__main__':
     IpAddress = '127.0.0.1'
     PORT = '8080'
-    ClientName = input(str('Name you want to show in chat'))
+    ClientName = input(str('Name you want to show in chat: '))
     roomName = 'Marvel'
     messageTosend = ''
-
 
     sio = AsyncClient()
     FullIp = 'http://'+IpAddress+':'+PORT
@@ -37,13 +36,7 @@ if __name__ == '__main__':
                 print("You have left the chat.")
                 await sio.disconnect()
                 break
-
-            await sio.emit('send_chat_room', {
-                'message': messageTosend,
-                'name': ClientName,
-                'room': roomName
-            })
-        
+            
     async def connectToserver():
         await sio.connect(FullIp)
         await sio.wait()
