@@ -6,7 +6,7 @@ from aioconsole import ainput
 if __name__ == '__main__':
     IpAddress = '127.0.0.1'
     PORT = '8080'
-    ClientName = input(str('Name you want to show in chat: '))
+    ClientName = input(str('Name you want to show in chat : '))
     roomName = 'Marvel'
     messageTosend = ''
 
@@ -21,14 +21,14 @@ if __name__ == '__main__':
     @sio.event
     async def get_message(message):
         if ClientName == message['from']:
-            print('You : ' + message['message'])
+            print('You: ' + message['message'])
         else:
-            print(message['from']+' : '+message['message'])
+            print(message['from']+': '+message['message'])
 
     async def send_message():
         while True:
             await asyncio.sleep(0.01)
-            messageTosend = await ainput()
+            messageTosend = await ainput(': ')
             await sio.emit('send_chat_room', {'message': messageTosend,'name': ClientName, 'room': roomName})
 
             if messageTosend.lower() == '/exit':

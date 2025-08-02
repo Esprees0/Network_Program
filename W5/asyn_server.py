@@ -2,28 +2,38 @@ import asyncio
 from aiohttp import web
 import socketio
 from json import dumps
+from datetime import datetime
 
 sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
+time_joined = datetime.now().strftime('%H:%M:%S')
 
 usernames = {}
 
 @sio.event
 async def join_chat(sid, message):
-        name = message.get('name', sid)
-        room = message['room']
-        usernames[sid] = name
-        print(message.get('name', sid) + ' joined to {}'.format(message['room']))
-        await sio.enter_room(sid, message['room'])
+    name = message.get('name', sid)
+    room = message['room']
+    usernames[sid] = name
+    print(f'{name} joined to {room}')
+    await sio.enter_room(sid, room)
 
+    await sio.emit('get_message', {
+        'message': f'{name} joined at {time_joined}',
+        'from': 'System'
+    }, room=room)
+        
 @sio.event
 async def exit_chat(sid, message):
         await sio.leave_room(sid, message['room'])
-
+        
 @sio.event
 async def send_chat_room(sid, message):
-        await sio.emit('get_message', {'message': message['message'], 'from': message['name']}, room=message['room'])
+        await sio.emit('get_message', 
+        {'message': message['message'],
+         'from': message['name']},
+          room=message['room'])
 
 @sio.event
 async def connect(sid, environ):

@@ -8,7 +8,6 @@ sio = socketio.AsyncServer(async_mode='aiohttp')
 app = web.Application()
 sio.attach(app)
 
-# เก็บข้อมูล client
 clients = {}
 
 @sio.event
@@ -17,7 +16,6 @@ async def join_chat(sid, message):
     room = message['room']
     join_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # บันทึกข้อมูล client
     clients[sid] = {
         'name': name,
         'room': room,
@@ -27,11 +25,14 @@ async def join_chat(sid, message):
 
     print(f"{name} joined to {room} at {join_time}")
     await sio.enter_room(sid, room)
-
     await sio.emit('user_joined', {
         'name': name,
         'room': room,
         'join_time': join_time
+    }, room=room)
+    await sio.emit('get_message', {
+        'message': f'{name} joined at {join_time}',
+        'from': 'System'
     }, room=room)
 
 @sio.event
@@ -74,7 +75,6 @@ async def connect(sid, environ):
 
 @sio.event
 async def disconnect(sid):
-    # อัปเดต leave_time ถ้ายังไม่ออกห้อง
     if sid in clients:
         name = clients[sid]['name']
         room = clients[sid]['room']
@@ -88,7 +88,6 @@ async def disconnect(sid):
             'leave_time': leave_time
         }, room=room)
 
-    print('Client disconnected')
 
 if __name__ == '__main__':
     web.run_app(app)
