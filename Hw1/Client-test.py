@@ -7,7 +7,7 @@ if __name__ == '__main__':
     IpAddress = '127.0.0.1'
     PORT = '8080'
     ClientName = input(str('Name you want to show in chat : '))
-    roomName = 'Marvel'
+    roomName = ''
     messageTosend = ''
 
     sio = AsyncClient()
