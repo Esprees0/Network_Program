@@ -1,6 +1,27 @@
 {
+  "name": "network-program",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Esprees0/Network_Program.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Esprees0/Network_Program/issues"
+  },
+  "homepage": "https://github.com/Esprees0/Network_Program#readme",
+  "description": "",
   "dependencies": {
-    "express": "^4.21.2",
-    "socket.io": "^4.8.1"
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.8.1",
+    "sqlite3": "^5.1.7"
   }
 }
